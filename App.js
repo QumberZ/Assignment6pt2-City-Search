@@ -1,51 +1,54 @@
 import React, { useEffect, useState  } from "react";
 import axios from 'axios'
-
-
-
-
+import './City.css';
 
 function App() {
 
   const[zip, setZip] = useState("")
   const [data, setData] = useState([])
  
-
-  //let link = 'http://ctp-zip-api.herokuapp.com/zip/' + zip.then(res) 
-
-  // call API
- // const fetchPost = async () => {
-   // await axios.get(link)
-    //.then(response => {
-      //setData(res.data)
-      //console.log(res)
-    //})
-    //}
+let jsonData = [];
 
 
-
-
- function handleSubmit (event) {
-    event.preventDefault()
-    axios.get("http://ctp-zip-api.herokuapp.com/zip/" + zip).then((res) => {
-      setData(res.data)
+  function handleSubmit (event) {
+  axios.get (`http://ctp-zip-api.herokuapp.com/city/` + zip.toUpperCase())
+  .then((res) => { 
+    setData(res.data)
+    console.log(res.data)
     console.log("hello its working")
-   
- })
-}
+  })
+
+ }
+ 
+
 
 
 const handleChange = (event) => {
-  event.preventDefault();
-  setZip(event.target.value)
-console.log(event.target.value)
+ event.preventDefault();
+  setZip((event.target.value).toUpperCase())
+console.log((event.target.value).toUpperCase())
 
 
 }
 
 
+function displayZip() {
+if (jsonData) {
+  console.log(jsonData)
+
+}
+}
+
+function noZip(){
+console.log("noZip")
+}
+
+
+
  useEffect(() => {
-  }, [])
+   handleSubmit()
+   console.log("inside Useffect")
+  }, [jsonData])
 
 
 
@@ -63,24 +66,21 @@ console.log(event.target.value)
 
 
 
-{data.map((info) => {
+<div>
+
+{jsonData ? displayZip() : noZip() }
+</div>
+
+
+
+{data.map((element) => {
 return(
 
 <ul className=" container">
-<li className="info" > Zipcode: {info.Zipcode}</li>
-<li className="info" > Country: {info.Country}</li>
-  <li className="info" > State: {info.State}</li>
-  <li className="info" > City: {info.City}</li>
-  <li className="info" > Location: {info.Location}</li>
-  <li className="info" > EstimatedPopulation: {info.EstimatedPopulation}</li>
-  <li className="info" > Wages: {info.TotalWages}</li>
+<li className="info" > Zipcode: {element}</li>
+
 </ul>
-
-
 );
-
-
-
       })}
       
      
